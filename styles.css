@@ -1,0 +1,231 @@
+/* CSS Variables for easy theming */
+:root {
+  --primary-color: #00cec9;
+  --secondary-color: #1e293b;
+  --accent-color: #38bdf8;
+  --background-color: #f0f2f5;
+  --white: #ffffff;
+  --text-color: #333;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Global Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 225px;
+  height: 100vh;
+  background: var(--secondary-color);
+  color: var(--white);
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: auto;
+  box-shadow: 2px 0 5px var(--shadow-color);
+}
+.sidebar .logo {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-align: center;
+}
+.sidebar .logo span {
+  color: var(--accent-color);
+}
+.sidebar .menu a {
+  color: var(--white);
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s, transform 0.2s ease-in-out;
+}
+.sidebar .menu a.active {
+  background: var(--accent-color);
+  font-weight: 600;
+}
+.sidebar .menu a:hover {
+  background: #1e90ff;
+  transform: translateX(5px);
+}
+.sidebar .menu a i {
+  margin-right: 10px;
+}
+
+/* Main Content Styles */
+.main-content {
+  margin-left: 250px;
+  padding: 30px;
+}
+.main-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.main-header h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+.main-header p {
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Dashboard Tools (Cards) */
+.dashboard-tools {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.card {
+  background: var(--white);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px var(--shadow-color);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card i {
+  font-size: 2rem;
+  color: var(--accent-color);
+  margin-bottom: 10px;
+}
+.card h3 {
+  margin-bottom: 15px;
+}
+.card button {
+  background: var(--accent-color);
+  border: none;
+  color: var(--white);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.card button:hover {
+  background: #2563eb;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Recent Documents (if applicable) */
+.recent-documents {
+  margin-top: 40px;
+}
+.recent-documents h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+.recent-documents .document {
+  background: var(--white);
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 5px var(--shadow-color);
+}
+
+/* Generic Container for Forms, Summaries, etc. */
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  background: var(--white);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+/* Form Elements */
+textarea,
+input[type="file"],
+input[type="text"],
+select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  margin-bottom: 10px;
+}
+textarea:focus,
+input[type="file"]:focus,
+input[type="text"]:focus,
+select:focus {
+  border-color: var(--accent-color);
+  outline: none;
+}
+button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #007BFF;
+  color: var(--white);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+button:hover {
+  background: #0056b3;
+}
+
+/* Summary Box */
+.summary-box {
+  margin-top: 20px;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-style: italic;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding: 10px;
+  }
+  .main-content {
+    margin-left: 0;
+    padding: 20px;
+  }
+  .search-form,
+  .container {
+    width: 90%;
+  }
+  .results-container li {
+    padding: 15px;
+  }
+}

@@ -1,0 +1,255 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* Navbar */
+.navbar {
+    background: #1e293b;
+    color: white;
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex; /* Use flexbox */
+    justify-content: space-between; /* Spread items to left and right */
+    align-items: center; /* Vertically align items */
+}
+
+/* Logo Section */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between logo image and text */
+}
+
+.logo-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Circular logo */
+}
+
+.logo-text {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #38bdf8;
+    text-decoration: none;
+}
+
+/* Navigation Links */
+.nav-links {
+    display: flex; /* Align links in a row */
+    list-style: none; /* Remove bullets */
+    gap: 20px; /* Space between links */
+    margin: 0; /* Remove default margins */
+    padding: 0;
+}
+
+.nav-links li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links li a:hover {
+    color: #38bdf8; /* Change color on hover */
+}
+
+/* Login Button */
+.login-btn {
+    background: #38bdf8;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.login-btn:hover {
+    background: #1e90ff;
+}
+
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .nav-links {
+        display: none; /* Hide links for smaller screens */
+    }
+
+    .menu-btn {
+        display: block; /* Show a menu button */
+        font-size: 1.5rem;
+        color: white;
+        cursor: pointer;
+    }
+
+    .menu-open .nav-links {
+        display: flex; /* Display links when menu is toggled */
+        flex-direction: column;
+        gap: 10px;
+        background: #1e293b;
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        padding: 1rem;
+        border-radius: 5px;
+    }
+
+    .login-btn {
+        margin-top: 10px; /* Adjust login button for smaller screens */
+    }
+}
+
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(to bottom right, #38bdf8, #1e90ff);
+    color: white;
+    text-align: center;
+    padding: 5rem 0;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.hero .btn {
+    text-decoration: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    margin: 0 10px;
+    transition: background 0.3s;
+}
+
+.hero .primary-btn {
+    background: white;
+    color: #1e90ff;
+}
+
+.hero .primary-btn:hover {
+    background: #e0f7ff;
+}
+
+.hero .secondary-btn {
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+}
+
+.hero .secondary-btn:hover {
+    background: white;
+    color: #1e90ff;
+}
+
+/* About Section */
+.about {
+    text-align: center;
+    padding: 4rem 0;
+    background: #f9fafb;
+}
+
+.about img {
+    margin-top: 2rem;
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+/* Features Section */
+.features {
+    padding: 4rem 0;
+    background: #ffffff;
+}
+
+.features .feature-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.feature-item {
+    text-align: center;
+    max-width: 300px;
+    flex: 1;
+    background: #f9fafb;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.feature-item:hover {
+    transform: translateY(-10px);
+}
+
+.feature-item i {
+    font-size: 2.5rem;
+    color: #1e90ff;
+    margin-bottom: 1rem;
+}
+
+.feature-item h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Testimonials Section */
+.testimonials {
+    background: #f4f4f4;
+    text-align: center;
+    padding: 4rem 0;
+}
+
+.testimonials h2 {
+    margin-bottom: 2rem;
+}
+
+.testimonials .testimonial-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.testimonial {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    flex: 1;
+}
+
+/* Footer */
+.footer {
+    background: #1e293b;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 2rem;
+}
