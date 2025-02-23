@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | LazyScholars</title>
+  <!-- Google Fonts & Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <!-- jQuery (for AJAX) and html2pdf -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+  <style>
+    /* CSS Variables for easy theming */
+    :root {
+      --primary-color: #00cec9;
+      --secondary-color: #2d3436;
+      --accent-color: #00cec9;
+      --background-color: #f0f2f5;
+      --offwhite: #f7f7f7;
+      --text-color: #333;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+      --button-bg: #2563eb;       /* New button background (blue) */
+      --button-hover: #1d4ed8;    /* Darker blue on hover */
+    }
+
+    /* Reset & Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--background-color);
+      color: var(--text-color);
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Sidebar (Assumed fixed, already adjusted by you) */
+    .sidebar {
+      width: 220px;
+      background: var(--secondary-color);
+      color: #fff;
+      position: fixed;
+      height: 100%;
+      overflow-y: auto;
+    }
+    .sidebar .logo {
+      padding: 20px;
+      text-align: center;
+      background: #23272a;
+    }
+    .sidebar .logo h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+    }
+    .sidebar .logo span {
+      color: var(--primary-color);
+    }
+    .sidebar .menu a {
+      display: block;
+      padding: 15px 20px;
+      color: #b2bec3;
+      border-bottom: 1px solid transparent;
+      transition: background 0.3s ease;
+    }
+    .sidebar .menu a:hover,
+    .sidebar .menu a.active {
+      background: var(--primary-color);
+      color: #fff;
+    }
+    .sidebar .menu a i {
+      margin-right: 10px;
+    }
+
+    /* Main Content Styles */
+    .main-content {
+      margin-left: 240px;
+      padding: 20px; /* Reduced padding for a more compact layout */
+      min-height: 100vh;
+      background: var(--background-color);
+    }
+    .main-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    .header-left h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--secondary-color);
+    }
+    .header-left p {
+      font-size: 1.1rem;
+      color: #6b7280;
+      margin-top: 8px;
+    }
+    .header-right {
+      position: relative;
+    }
+    .logout-btn {
+      background: #e53e3e;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.3s ease;
+    }
+    .logout-btn:hover {
+      background: #c53030;
+    }
+    .logout-btn i {
+      margin-right: 5px;
+    }
+
+    /* Dashboard Tools Section */
+    .dashboard-tools {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+    .card i {
+      font-size: 2.8rem;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+    }
+	.card {
+	  background: var(--offwhite);
+	  padding: 16px;
+	  border-radius: 12px;
+	  box-shadow: 0 6px 15px var(--shadow-color);
+	  text-align: center;
+	  transition: transform 0.3s ease, box-shadow 0.3s ease;
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: space-between; /* Ensures content and button are evenly placed */
+	  height: 100%; /* Makes all cards equal height */
+	}
+
+	.card h3 {
+	  font-size: 1.6rem;
+	  margin-bottom: 15px;
+	  color: var(--secondary-color);
+	  flex-grow: 1; /* Makes the title take up flexible space */
+	}
+
+	.card button {
+	  background: linear-gradient(89deg, #00cec9, #008683);
+	  color: #fff;
+	  border: none;
+	  border-radius: 8px;
+	  padding: 10px 20px;
+	  cursor: pointer;
+	  font-size: 1rem;
+	  font-weight: 600;
+	  transition: background 0.3s ease, transform 0.2s;
+	  margin-top: auto;
+	}
+
+	.card button:hover {
+	  background: #00CEC9;
+	  transform: scale(1.05);
+	  box-shadow: 0px 0px 10px rgba(0, 204, 195, 0.5); /* Soft glow */
+	}
+
+
+    /* Footer Styles */
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #b2bec3;
+      position: fixed;
+      bottom: 0;
+      left: 240px;
+      right: 0;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+      .main-content {
+        margin-left: 0;
+      }
+      footer {
+        left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <h2>Lazy<span>Scholars</span></h2>
+    </div>
+    <nav class="menu">
+      <a href="/dashboard"class="active"><i class="fas fa-home"></i> Dashboard</a>
+      <a href="/library"><i class="fas fa-book"></i> Library</a>
+      <a href="/summarizer"><i class="fas fa-align-left"></i> Summarizer</a>
+      <a href="/trend-analyzer"><i class="fas fa-chart-line"></i> Analyzer</a>
+      <a href="/article-finder"><i class="fas fa-search"></i> Article Finder</a>
+      <a href="/mindmap"><i class="fas fa-sitemap"></i> MindMap</a>
+      <a href="/citation-generator"><i class="fas fa-book"></i> Citation Generator</a>
+      <a href="/research-tutorials" ><i class="fas fa-graduation-cap"></i> Research Tutorials</a>
+	  <a href="/todo-list"><i class="fas fa-list"></i> To-Do List</a>
+
+    </nav>
+  </aside>
+  
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="main-header">
+      <div class="header-left">
+        <h1>Welcome Back, {{ user }}!</h1>
+        <p>Your research tools, simplified.</p>
+      </div>
+      <div class="header-right">
+        <button class="logout-btn" onclick="location.href='/logout'">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </header>
+    
+    <section class="dashboard-tools">
+      <div class="card">
+        <i class="fas fa-file-alt"></i>
+        <h3>New Document</h3>
+        <button onclick="window.open('https://docs.google.com/document/d/1_sXjAmr72bLzLn-bFVQbddENCGMIZjrENw7K-5qDGtE/copy', '_blank')">Create</button>
+      </div>
+      <div class="card">
+        <i class="fas fa-align-left"></i>
+        <h3>Summarizer</h3>
+        <button onclick="location.href='/summarizer'">Open</button>
+      </div>
+      <div class="card">
+        <i class="fas fa-chart-line"></i>
+        <h3>Analyzer</h3>
+        <button onclick="location.href='/trend-analyzer'">Open</button>
+      </div>
+      <div class="card">
+        <i class="fas fa-search"></i>
+        <h3>Article Finder</h3>
+        <button onclick="location.href='/article-finder'">Open</button>
+      </div>
+      <div class="card">
+        <i class="fas fa-book"></i>
+        <h3>Citation Generator</h3>
+        <button onclick="location.href='/citation-generator'">Open</button>
+      </div>
+      <div class="card">
+        <i class="fas fa-sitemap"></i>
+        <h3>MindMap</h3>
+        <button onclick="location.href='/mindmap'">Create</button>
+      </div>
+      <div class="card">
+        <i class="fas fa-book"></i>
+        <h3>Library</h3>
+        <button onclick="location.href='/library'">Create</button>
+      </div>
+      <div class="card">
+        <i class="fas fa-graduation-cap"></i>
+        <h3>Research Tutorials</h3>
+        <button onclick="location.href='/research-tutorials'">Create</button>
+      </div>
+    </section>
+  </main>
+  
+  <footer>
+    <p>&copy; 2025 LazyScholars. All Rights Reserved.</p>
+  </footer>
+</body>
+</html>

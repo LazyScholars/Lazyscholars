@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mindmap | LazyScholars</title>
+  <!-- Google Fonts & Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <!-- jQuery (for AJAX) and html2pdf -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+  <style>
+    /* Reset & Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f0f2f5;
+      color: #333;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background: #2d3436;
+      color: #fff;
+      position: fixed;
+      height: 100%;
+      overflow-y: auto;
+    }
+    .sidebar .logo {
+      padding: 20px;
+      text-align: center;
+      background: #23272a;
+    }
+    .sidebar .logo h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+    }
+    .sidebar .logo span {
+      color: #00cec9;
+    }
+    .sidebar .menu a {
+      display: block;
+      padding: 15px 20px;
+      color: #b2bec3;
+      border-bottom: 1px solid transparent;
+      transition: background 0.3s ease;
+    }
+    .sidebar .menu a:hover,
+    .sidebar .menu a.active {
+      background: #00cec9;
+      color: #fff;
+    }
+    .sidebar .menu a i {
+      margin-right: 10px;
+    }
+    /* Main Content Styles */
+    .main-content {
+      margin-left: 220px;
+      padding: 30px;
+      min-height: 100vh;
+    }
+    .main-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .main-header h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 10px;
+    }
+    .main-header p {
+      font-size: 1.2rem;
+      color: #6b7280;
+      text-align: center;
+    }
+    /* Form Container */
+    .form-container {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 8px;
+    }
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: #333;
+      transition: border-color 0.3s ease;
+    }
+    .form-group textarea:focus {
+      border-color: #00cec9;
+      outline: none;
+    }
+    .button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .button-container button {
+      background: linear-gradient(89deg, #00cec9, #008683);
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .button-container button:hover {
+      background: #0097a7;
+      transform: scale(1.05);
+    }
+    /* MindMap Container */
+    .mindmap-container {
+      margin-top: 40px;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    }
+    .mindmap-container h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #333;
+    }
+    #mermaid-diagram {
+      margin-top: 20px;
+      background: #f4f4f4;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+    }
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 10px;
+      }
+      .main-content {
+        margin-left: 0;
+        padding: 20px;
+      }
+      .main-header h1 {
+        font-size: 2rem;
+      }
+      .main-header p {
+        font-size: 1rem;
+      }
+      .form-container {
+        width: 90%;
+      }
+    }
+  </style>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <h2>Lazy<span>Scholars</span></h2>
+    </div>
+    <nav class="menu">
+      <a href="/dashboard"><i class="fas fa-home"></i> Dashboard</a>
+      <a href="/library"><i class="fas fa-book"></i> Library</a>
+      <a href="/summarizer"><i class="fas fa-align-left"></i> Summarizer</a>
+      <a href="/trend-analyzer" ><i class="fas fa-chart-line"></i> Analyzer</a>
+      <a href="/article-finder"><i class="fas fa-search"></i> Article Finder</a>
+      <a href="/mindmap"class="active"><i class="fas fa-sitemap"></i> MindMap</a>
+      <a href="/citation-generator"><i class="fas fa-book"></i> Citation Generator</a>
+      <a href="/research-tutorials" ><i class="fas fa-graduation-cap"></i> Research Tutorials</a>
+	  <a href="/todo-list"><i class="fas fa-list"></i> To-Do List</a>
+
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="main-header">
+      <h1> MindMap Generator</h1>
+      <p>Create meaningful and visually appealing mind maps with AI!</p>
+    </div>
+
+    <div class="form-container">
+      <form method="POST">
+        <div class="form-group">
+          <label for="keywords">Enter Keywords/Ideas (separated by commas):</label>
+          <textarea id="keywords" name="keywords" rows="4" placeholder="E.g. Python: AI, Machine Learning: Data Science" required></textarea>
+        </div>
+        <div class="button-container">
+          <button type="submit">Generate MindMap</button>
+        </div>
+      </form>
+    </div>
+
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% endif %}
+
+    {% if mindmap_diagram %}
+      <div class="mindmap-container">
+        <h2>Generated MindMap:</h2>
+        <div id="mermaid-diagram">
+          <pre class="mermaid">
+{{ mindmap_diagram }}
+          </pre>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>

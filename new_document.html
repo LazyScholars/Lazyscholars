@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lazy Scholars Editor (CKEditor 5)</title>
+
+    <!-- ✅ CKEditor 5 CDN (No API Key Required) -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
+
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .editor-container {
+            width: 21cm;
+            margin: auto;
+            background: white;
+            padding: 10px;
+            border: 1px solid black;
+        }
+
+        /* ✅ Multi-Page Simulation */
+        .ck-content {
+            width: 21cm;
+            min-height: 29.7cm;
+            padding: 20px;
+            border: 1px solid black;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            background: white;
+            margin-bottom: 20px;
+            page-break-before: always; /* Forces new pages */
+        }
+
+        .btn {
+            padding: 10px;
+            margin: 5px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Lazy Scholars Editor (CKEditor 5 - Multi-Page)</h2>
+    
+    <div id="editor-container" class="editor-container">
+        <div class="page">
+            <textarea id="editor"></textarea>
+        </div>
+    </div>
+    
+    <button class="btn" id="save-btn">Save</button>
+    <button class="btn" id="load-btn">Load</button>
+    <button class="btn" id="google-upload">Upload to Google Drive</button>
+    <button class="btn" onclick="window.location.href='/logout'">Logout</button>
+
+    <script>
+        let editorInstance;
+
+        // ✅ Initialize CKEditor 5 with Page Breaks
+        ClassicEditor.create(document.querySelector('#editor'), {
+            height: '100vh',
+            removePlugins: ['MediaEmbed'],
+            toolbar: [
+                'heading', '|', 'bold', 'italic', 'underline', 'link', 'bulletedList', 
+                'numberedList', '|', 'pageBreak', 'undo', 'redo'
+            ]
+        }).then(editor => {
+            editorInstance = editor;
+            console.log('CKEditor initialized!');
+
+            // ✅ Monitor input to add page breaks dynamically
+            editor.model.document.on('change:data', () => {
+                enforcePageBreaks();
+            });
+        }).catch(error => console.error(error));
+
+        function enforcePageBreaks() {
+            const content = editorInstance.getData();
+            const paragraphs = content.split('<p>');
+            let formattedContent = '';
+            let wordCount = 0;
+            const wordsPerPage = 250; // Adjust for A4 page simulation
+
+            paragraphs.forEach(paragraph => {
+                wordCount += paragraph.split(' ').length;
+
+                if (wordCount > wordsPerPage) {
+                    formattedContent += `<div style="page-break-before: always;">${paragraph}</div>`;
+                    wordCount = 0;
+                } else {
+                    formattedContent += `<p>${paragraph}`;
+                }
+            });
+
+            editorInstance.setData(formattedContent);
+        }
+
+        // ✅ Save document
+        document.getElementById("save-btn").addEventListener("click", function() {
+            let content = editorInstance.getData();
+
+            fetch("/save", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ content: content })
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message));
+        });
+
+        // Load document
+        document.getElementById("load-btn").addEventListener("click", function() {
+            fetch("/load")
+            .then(response => response.json())
+            .then(data => {
+                if (data.length > 0) {
+                    let savedContent = data[data.length - 1].content;
+                    editorInstance.setData(savedContent);
+                }
+            });
+        });
+
+        // Upload to Google Drive
+        document.getElementById("google-upload").addEventListener("click", function() {
+            let content = editorInstance.getData();
+
+            fetch("/upload-google-drive", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ content: content })
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message));
+        });
+
+    </script>
+
+</body>
+</html>

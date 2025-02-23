@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ document.title }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <style>
+        /* General Reset */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: #f9fafb;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 225px;
+            height: 100vh;
+            background: #1e293b;
+            color: white;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar .logo {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .sidebar .logo span {
+            color: #38bdf8;
+        }
+
+        .sidebar .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .menu a:hover, .sidebar .menu a.active {
+            background: #38bdf8;
+            color: white;
+        }
+
+        .sidebar .menu a i {
+            margin-right: 10px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 225px;
+            padding: 20px;
+            width: calc(100% - 225px);
+        }
+
+        .toolbar {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-radius: 8px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .toolbar button, .toolbar select {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f4f4f4;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .toolbar button:hover, .toolbar select:hover {
+            background-color: #e0e0e0;
+        }
+
+        .toolbar .color-picker-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toolbar .color-picker-container label {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .document-title {
+            margin: 20px 0;
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            width: 100%;
+        }
+
+        .textarea-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .editor {
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-word;
+            font-size: 16px;
+            outline: none;
+            resize: none;
+        }
+
+        .action-toolbar {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .action-toolbar button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .btn-save {
+            background-color: #007bff;
+        }
+
+        .btn-save:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-back {
+            background-color: #6c757d;
+        }
+
+        .btn-back:hover {
+            background-color: #4e555b;
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo">
+            <h2>Lazy<span>Scholars</span></h2>
+        </div>
+    </aside>
+
+    <div class="main-content">
+        <h1 class="document-title">{{ document.title }}</h1>
+        <div class="toolbar">
+            <button onclick="formatText('bold')"><b>B</b></button>
+            <button onclick="formatText('italic')"><i>I</i></button>
+            <button onclick="formatText('underline')"><u>U</u></button>
+            <select id="fontSelect" onchange="changeFont()">
+                <option value="Poppins">Poppins</option>
+                <option value="Arial">Arial</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Verdana">Verdana</option>
+            </select>
+            <select id="fontSizeSelect" onchange="changeFontSize()">
+                <option value="10px">10px</option>
+                <option value="12px">12px</option>
+                <option value="14px">14px</option>
+                <option value="16px">16px</option>
+                <option value="18px">18px</option>
+                <option value="20px">20px</option>
+                <option value="24px">24px</option>
+            </select>
+            <div class="color-picker-container">
+                <label for="fontColor">Color:</label>
+                <input type="color" id="fontColor" onchange="changeColor()">
+            </div>
+        </div>
+        <div class="textarea-container">
+            <div class="editor" contenteditable="true">{{ document.content }}</div>
+        </div>
+        <div class="action-toolbar">
+            <button class="btn-save" onclick="saveDocument()">Save</button>
+            <button class="btn-back" onclick="location.href='/dashboard'">Back</button>
+        </div>
+    </div>
+
+    <script>
+        function formatText(command) {
+            document.execCommand(command, false, null);
+        }
+
+        function changeFont() {
+            const font = document.getElementById('fontSelect').value;
+            document.execCommand('fontName', false, font);
+        }
+
+        function changeFontSize() {
+            const fontSize = document.getElementById('fontSizeSelect').value;
+            document.execCommand('fontSize', false, "7");
+            document.querySelectorAll("font[size='7']").forEach(font => {
+                font.removeAttribute('size');
+                font.style.fontSize = fontSize;
+            });
+        }
+
+        function changeColor() {
+            const color = document.getElementById('fontColor').value;
+            document.execCommand('foreColor', false, color);
+        }
+
+        function saveDocument() {
+            const content = document.querySelector('.editor').innerHTML;
+            alert('Document saved successfully!');
+        }
+    </script>
+</body>
+</html>

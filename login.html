@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | LazyScholars</title>
+  <!-- Google Fonts & Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <style>
+    /* Base Variables for Light Mode (Default) */
+    :root {
+      --primary-color: #00cec9;             /* Cyan Accent */
+      --accent-color: #38bdf8;              /* Lighter cyan for highlights */
+      --background-gradient: linear-gradient(135deg, #38bdf8, #1e90ff);
+      --container-bg: #ffffff;              /* White container */
+      --input-bg: #f7f7f7;                  /* Light grey input background */
+      --border-color: #ccc;
+      --text-color: #333;
+      --button-bg: #2563eb;               /* Blue button */
+      --button-hover: #1d4ed8;            /* Darker blue on hover */
+      --shadow-color: rgba(0, 0, 0, 0.2);
+    }
+
+    /* Override Variables for Dark Mode */
+    body.dark-mode {
+      --background-gradient: linear-gradient(135deg, #121212, #2c2c2c);
+      --container-bg: #1e1e1e;
+      --input-bg: #2a2a2a;
+      --border-color: #444;
+      --text-color: #ffffff;
+      --button-bg: #00cec9;
+      --button-hover: #00b3b3;
+      --shadow-color: rgba(0, 0, 0, 0.6);
+    }
+
+    /* Global Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--background-gradient);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      transition: background 0.3s ease, color 0.3s ease;
+      color: var(--text-color);
+    }
+    a {
+      text-decoration: none;
+      color: var(--text-color);
+      transition: color 0.3s;
+    }
+
+    /* Container (Login Card) */
+    .container {
+      background: var(--container-bg);
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px var(--shadow-color);
+      width: 380px;
+      text-align: center;
+      position: relative;
+      animation: fadeInUp 0.8s ease-out;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Branding & Headings */
+    .brand-header h1 {
+      font-size: 2.3rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+    .brand-header p {
+      font-size: 1rem;
+      color: var(--text-color);
+    }
+    .login-heading {
+      margin: 20px 0;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+
+    /* Form Styles */
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      text-align: left;
+      margin: 10px 0 5px;
+      font-weight: 600;
+      color: var(--accent-color);
+    }
+    input[type="text"],
+    input[type="password"] {
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 15px;
+      background: var(--input-bg);
+      color: var(--text-color);
+      transition: border-color 0.3s;
+    }
+    input:focus {
+      border-color: var(--primary-color);
+      outline: none;
+    }
+    .password-toggle {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: -10px;
+      margin-bottom: 15px;
+    }
+    .password-toggle button {
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .password-toggle button:hover {
+      text-decoration: underline;
+    }
+    button[type="submit"] {
+      padding: 12px;
+      background: var(--button-bg);
+      border: none;
+      border-radius: 8px;
+      color: var(--container-bg);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s;
+    }
+    button[type="submit"]:hover {
+      background: var(--button-hover);
+      transform: scale(1.03);
+    }
+
+    /* Register Link */
+    .register-link {
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+    .register-link a {
+      color: var(--primary-color);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 450px) {
+      .container {
+        width: 90%;
+        padding: 20px;
+      }
+    }
+
+    /* Theme Toggle Button (Bottom Right) */
+    .theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--container-bg);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 5px var(--shadow-color);
+      cursor: pointer;
+      transition: background 0.3s;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      background: var(--accent-color);
+    }
+    .theme-toggle i {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      transition: color 0.3s;
+    }
+  </style>
+  <script>
+    // Immediately apply the saved theme (or default to light)
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.body.classList.add(savedTheme + '-mode');
+    })();
+  </script>
+</head>
+<body>
+  <div class="container">
+    <div class="brand-header">
+      <h1>Lazy<span>Scholars</span></h1>
+      <p>Where smart research is effortless</p>
+    </div>
+    <div class="login-heading">Login</div>
+
+    {% if error %}
+      <p style="color: var(--primary-color); margin-bottom: 10px;">{{ error }}</p>
+    {% endif %}
+    
+    <form method="POST" action="{{ url_for('login') }}">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" placeholder="Enter your username" required aria-label="Username">
+      
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required aria-label="Password">
+      
+      <div class="password-toggle">
+        <button type="button" onclick="togglePassword()">Show Password</button>
+      </div>
+      
+      <button type="submit">Login</button>
+    </form>
+
+    <p class="register-link">Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
+  </div>
+  
+  <!-- Theme Toggle Button -->
+  <div class="theme-toggle">
+    <button onclick="toggleTheme()"><i id="theme-icon" class="fas fa-sun"></i></button>
+  </div>
+  
+  <script>
+    function togglePassword() {
+      const passwordField = document.getElementById('password');
+      passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
+    }
+    function toggleTheme() {
+      if(document.body.classList.contains('light-mode')) {
+        document.body.classList.remove('light-mode');
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        document.getElementById('theme-icon').classList.replace('fa-sun', 'fa-moon');
+      } else {
+        document.body.classList.remove('dark-mode');
+        document.body.classList.add('light-mode');
+        localStorage.setItem('theme', 'light');
+        document.getElementById('theme-icon').classList.replace('fa-moon', 'fa-sun');
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register | LazyScholars</title>
+  <!-- Google Fonts & Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <style>
+    /* ------------------------------
+       Theme Variables
+       Dark Mode is Default
+    ------------------------------ */
+    :root {
+      --primary-color: #00cec9;       /* Vibrant cyan accent */
+      --accent-color: #38bdf8;        /* Lighter cyan highlight */
+      --background-color: #121212;      /* Dark background */
+      --container-bg: #1e1e1e;          /* Dark container background */
+      --navbar-bg: #23272a;             /* Not used here, but part of identity */
+      --text-color: #f0f0f0;            /* Light text */
+      --link-color: #f0f0f0;            /* Light links */
+      --button-bg: #00cec9;            /* Cyan buttons */
+      --button-hover: #00b3b3;         /* Darker cyan on hover */
+      --shadow-color: rgba(0, 0, 0, 0.6);
+    }
+    /* Light Mode Overrides */
+    body.light-mode {
+      --background-color: #f0f2f5;
+      --container-bg: #ffffff;
+      --text-color: #333;
+      --link-color: #333;
+      --button-bg: #2563eb;
+      --button-hover: #1d4ed8;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    /* ------------------------------
+       Global Reset & Base Styles
+    ------------------------------ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--background-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    a {
+      text-decoration: none;
+      color: var(--link-color);
+      transition: color 0.3s;
+    }
+    
+    /* ------------------------------
+       Container (Card) Styles
+    ------------------------------ */
+    .container {
+      background: var(--container-bg);
+      padding: 40px 50px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px var(--shadow-color);
+      width: 400px;
+      text-align: center;
+      position: relative;
+      transition: background 0.3s, box-shadow 0.3s;
+      animation: fadeInUp 0.8s ease-out;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* ------------------------------
+       Brand Header & Register Heading
+    ------------------------------ */
+    .brand-header {
+      margin-bottom: 20px;
+    }
+    .brand-header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+    .brand-header p {
+      font-size: 1rem;
+      color: var(--text-color);
+    }
+    .register-heading {
+      margin: 20px 0;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+    
+    /* ------------------------------
+       Form Styles
+    ------------------------------ */
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      text-align: left;
+      margin: 10px 0 5px;
+      font-weight: 600;
+      color: var(--accent-color);
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 15px;
+      background: var(--container-bg);
+      color: var(--text-color);
+      transition: border-color 0.3s;
+    }
+    input:focus {
+      border-color: var(--primary-color);
+      outline: none;
+    }
+    
+    /* ------------------------------
+       Button Styles
+    ------------------------------ */
+    button {
+      padding: 12px;
+      background: var(--button-bg);
+      border: none;
+      border-radius: 8px;
+      color: var(--container-bg);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s;
+    }
+    button:hover {
+      background: var(--button-hover);
+      transform: scale(1.03);
+    }
+    
+    /* ------------------------------
+       Register Link
+    ------------------------------ */
+    .register-link {
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+    .register-link a {
+      color: var(--primary-color);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+    
+    /* ------------------------------
+       Error Message
+    ------------------------------ */
+    .error {
+      color: red;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+    
+    /* ------------------------------
+       Theme Toggle Button (Bottom Right)
+    ------------------------------ */
+    .theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--container-bg);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 5px var(--shadow-color);
+      cursor: pointer;
+      transition: background 0.3s;
+      z-index: 1000;
+    }
+    .theme-toggle:hover {
+      background: var(--accent-color);
+    }
+    .theme-toggle i {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      transition: color 0.3s;
+    }
+    
+    @media (max-width: 450px) {
+      .container {
+        width: 90%;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body class="dark-mode">
+  <div class="container">
+    <div class="brand-header">
+      <h1>Lazy<span>Scholars</span></h1>
+      <p>Where smart research is effortless</p>
+    </div>
+    <div class="register-heading">Register</div>
+    
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% endif %}
+    
+    <form method="POST" action="{{ url_for('register') }}">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" placeholder="Enter your username" required>
+      
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      
+      <button type="submit">Register</button>
+    </form>
+    <p class="register-link">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+  </div>
+  
+  <!-- Theme Toggle Button -->
+  <div class="theme-toggle">
+    <button onclick="toggleTheme()"><i id="theme-icon" class="fas fa-moon"></i></button>
+  </div>
+  
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('light-mode');
+      const themeIcon = document.getElementById('theme-icon');
+      if(document.body.classList.contains('light-mode')) {
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+      } else {
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+      }
+    }
+  </script>
+</body>
+</html>
